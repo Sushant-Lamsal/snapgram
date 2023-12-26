@@ -13,18 +13,23 @@ import { Input } from "@/components/ui/input"
 import { SignupValidation } from "@/lib/validation"
 import { z } from "zod"
 import Loader from "@/components/shared/Loader"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useToast } from "@/components/ui/use-toast"
 import { useCreateUserAccount, useSignInAccount } from "@/lib/react-query/queriesAndMutations"
+import { useUserContext } from "@/context/AuthContext"
 
 
 const SignupForm = () => {
+  
   const { toast } = useToast()
-  //Sometimes button needs to process action after submitting it so 
+  const {checkAuthUser , isLoading: isUserLoading} = useUserContext();
+  const navigate = useNavigate();
+  
   //using mutation of react query
-  const {mutateAsync: createUserAccount, isLoading: isCreatingUser} = useCreateUserAccount();
-  const {mutateAsync: signInAccount, isLoading: isSigningIn} = useSignInAccount();
-  // 1. Define your form.
+  const {mutateAsync: createUserAccount, isPending: isCreatingUser} = useCreateUserAccount();
+  const {mutateAsync: signInAccount, isPending: isSigningIn} = useSignInAccount();
+  
+  // Defining the form.
   const form = useForm<z.infer<typeof SignupValidation>>({
     resolver: zodResolver(SignupValidation),
     defaultValues: 
@@ -36,6 +41,7 @@ const SignupForm = () => {
     },
   })
 
+//This is the onsubmit function
   async function onSubmit(values: z.infer<typeof SignupValidation>) {
    //Creating the user
   const newUser = await createUserAccount(values);
@@ -54,6 +60,13 @@ const SignupForm = () => {
   
   }
   //after the session we have to store that session in react context to know if we have logged in user
+  const isLoggedIn = await checkAuthUser();
+  if(isLoggedIn){
+    form.reset();
+    navigate('/');
+  } else {
+    return toast ({title: "Sign up failed. Pleas try again."})
+  }
   }
 
   return (
