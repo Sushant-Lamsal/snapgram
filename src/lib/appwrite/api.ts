@@ -88,3 +88,13 @@ export async function getCurrentUser(){
     console.log(error)
   }
 }
+
+//This function is to sign out the user
+export async function signOutAccount(){
+  try {
+    const session = await account.deleteSession('current')
+    return session;
+  } catch (error) {
+    console.log(error)
+  }
+}
