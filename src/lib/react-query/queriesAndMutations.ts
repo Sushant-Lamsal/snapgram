@@ -1,4 +1,6 @@
 //using react-query 
+
+//these are the hooks we will use to make our queries and mutations and it is directly provided by react-query
 import {
   useQuery,
   useMutation,
@@ -8,7 +10,7 @@ import {
 import { createUserAccount, signInAccount } from '../appwrite/api'
 import { INewUser } from '@/types'
 
-//initializing our first mutation
+//initializing our first mutation so that we are able to change the data in the database and create new user account in the database
 export const useCreateUserAccount = () => {
   return useMutation(
     {

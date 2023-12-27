@@ -1,9 +1,10 @@
-//This is the function we are about to call from the form
+//This is the function we are to call from the form page
 
 import { INewUser } from "@/types";
 import {ID, Query} from 'appwrite'
 import { account, appwriteConfig, avatars, databases } from "./config";
 
+// This function is to create a new user account
 export async function createUserAccount(user : INewUser){
   try {
     const newAccount = await account.create(
@@ -31,6 +32,7 @@ export async function createUserAccount(user : INewUser){
   }
 }
 
+// This function is to save the user to the database
 export async function saveUserToDB(user: {
   accountId: string;
   email : string;
@@ -53,6 +55,7 @@ export async function saveUserToDB(user: {
   }
 }
 
+// This function is to sign in the user
 export async function signInAccount(user : {
   email:string;
   password:string;
@@ -69,6 +72,7 @@ export async function signInAccount(user : {
   }
 }
 
+// This function is to get the current user and login
 export async function getCurrentUser(){
   try {
     const currentAccount = await account.get()
