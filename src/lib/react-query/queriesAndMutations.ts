@@ -9,6 +9,7 @@ import {
 } from '@tanstack/react-query'
 import { createPost, createUserAccount, signInAccount, signOutAccount } from '../appwrite/api'
 import { INewPost, INewUser } from '@/types'
+import { QUERY_KEYS } from './queryKeys'
 
 //initializing our first mutation so that we are able to change the data in the database and create new user account in the database
 export const useCreateUserAccount = () => {
@@ -36,9 +37,14 @@ export const useSignOutAccount = () => {
   )
 }
 export const useCreatePost = () => {
+  const queryClient = useQueryClient();
   return useMutation(
     {
       mutationFn: (post: INewPost) => createPost(post),
-    }
-  )
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey:[QUERY_KEYS.GET_RECENT_POSTS]
+        })
+      }
+    })
 }
