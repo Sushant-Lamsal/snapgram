@@ -16,9 +16,10 @@ import { useCreatePost } from "@/lib/react-query/queriesAndMutations"
 
 type PostFormProps ={
   post?: Models.Document
+  action: 'Create' | 'update'
 }
 
-const PostForm = ({post}: PostFormProps) => {
+const PostForm = ({post , action}: PostFormProps) => {
   const {mutateAsync: createPost, isPending: isLoading} = useCreatePost()
   const {user } = useUserContext()
   const {toast} = useToast()
