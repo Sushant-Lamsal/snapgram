@@ -22,12 +22,12 @@ import { useUserContext } from "@/context/AuthContext"
 const SignupForm = () => {
   
   const { toast } = useToast()
-  const {checkAuthUser , isLoading: isUserLoading} = useUserContext();
+  const {checkAuthUser , } = useUserContext();
   const navigate = useNavigate();
   
   //using mutation of react query
   const {mutateAsync: createUserAccount, isPending: isCreatingUser} = useCreateUserAccount();
-  const {mutateAsync: signInAccount, isPending: isSigningIn} = useSignInAccount();
+  const {mutateAsync: signInAccount} = useSignInAccount();
   
   // Defining the form.
   const form = useForm<z.infer<typeof SignupValidation>>({
