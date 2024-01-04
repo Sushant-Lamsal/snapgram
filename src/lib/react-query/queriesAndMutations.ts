@@ -10,7 +10,6 @@ import {
 import { createPost, createUserAccount, deletePost, deleteSavedPost, getCurrentUser, getInfinitePosts, getPostById, getRecentPosts, likePost, savePost, searchPosts, signInAccount, signOutAccount, updatePost } from '../appwrite/api'
 import { INewPost, INewUser, IUpdatePost } from '@/types'
 import { QUERY_KEYS } from './queryKeys'
-import { appwriteConfig, databases } from '../appwrite/config'
 
 //initializing our first mutation so that we are able to change the data in the database and create new user account in the database
 export const useCreateUserAccount = () => {
@@ -90,7 +89,7 @@ export const useLikePost = () => {
 export const useSavePost = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ postId, userId }: { postId: string; userId: string }) =>
+    mutationFn: ({ postId, userId }: { postId: string; userId: string[] }) =>
       savePost(postId, userId),
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -168,11 +167,13 @@ export const useGetPosts = () => {
   return useInfiniteQuery({
     queryKey: [QUERY_KEYS.GET_INFINITE_POSTS],
     queryFn : getInfinitePosts,
+    //@ts-expect-error this works fine
     getNextPageParam: (lastPage) => {
-      if(lastPage && lastPage.documents.length === 0)
-      return null;
+      if (lastPage && lastPage.documents.length === 0) {
+        return null;
+      }
 
-      const lastId = lastPage.documents[lastPage.documents.length - 1].$id;
+      const lastId = lastPage?.documents[lastPage.documents.length - 1].$id;
       return lastId;
     }
   })

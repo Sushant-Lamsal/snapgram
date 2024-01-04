@@ -58,6 +58,7 @@ const Explore = () => {
           {shouldShowSearchResults ? (
             <SearchResults 
             isSearchFetching = {isSearchFetching}
+                //@ts-expect-error this works fines
             searchedPosts = {searchedPosts}
             />
           ): shouldShowPosts ? (

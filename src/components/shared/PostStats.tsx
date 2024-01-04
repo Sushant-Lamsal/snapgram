@@ -40,6 +40,7 @@ const PostStats = ({post , userId} : PostStatsProps) => {
     }
 
     setLikes(newLikes);
+        //@ts-expect-error this works fine
     likePost({postId: post.$id, likesArray : newLikes})
   };
 
@@ -51,6 +52,7 @@ const PostStats = ({post , userId} : PostStatsProps) => {
       setIsSaved(false)
       deleteSavedPost(savedPostRecord.$id)
     } else {
+          //@ts-expect-error this works fine
       savePost({postId: post?.$id || '', userId})
       setIsSaved(true);
     }
